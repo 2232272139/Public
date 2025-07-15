@@ -3,182 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>简易八字排盘系统</title>
+    <title>八字排盘系统</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css">
     <style>
         body {
-            background-color: #f8f9fa;
-            padding: 20px;
             font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f8f9fa;
         }
-        .container {
-            max-width: 800px;
+        .navbar-brand img {
+            height: 40px;
+        }
+        .banner {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 0.5rem;
+        }
+        .form-container {
             background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
         }
-        h1 {
-            color: #d63384;
+        .result-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
+            margin-top: 2rem;
+        }
+        .pillar {
+            display: inline-block;
             text-align: center;
-            margin-bottom: 30px;
+            margin: 0 1rem;
+            font-size: 1.2rem;
         }
-        .result-box {
-            margin-top: 30px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background-color: #f9f9f9;
+        .pillar .label {
+            font-weight: bold;
+            color: #6c757d;
         }
-        .bazi-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-            text-align: center;
-            margin: 20px 0;
+        .pillar .value {
+            font-size: 1.8rem;
+            color: #dc3545;
+            font-weight: bold;
         }
-        .bazi-pillar {
-            padding: 10px;
-            background: #fff;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+        .sidebar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.1);
         }
-        .loading {
-            display: none;
-            text-align: center;
-            margin: 20px 0;
+        .article-card {
+            margin-bottom: 1rem;
+            border-left: 3px solid #0d6efd;
         }
-        .tab-content {
-            padding: 15px 0;
+        footer {
+            background-color: #343a40;
+            color: white;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+        .analysis-section {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #eee;
+        }
+        .analysis-title {
+            color: #0d6efd;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .badge-element {
+            font-size: 1rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>简易八字排盘系统</h1>
-        
-        <form id="baziForm">
-            <div class="row mb-3">
-                <label for="birthDate" class="col-sm-3 col-form-label">出生日期</label>
-                <div class="col-sm-9">
-                    <input type="date" class="form-control" id="birthDate" required>
+    <!-- 头部区域 -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJ3aGl0ZSI+PHBhdGggZD0iTTEyIDJDNi40ODcgMiAyIDYuNDg3IDIgMTJzNC40ODcgMTAgMTAgMTAgMTAtNC40ODcgMTAtMTBTMTcuNTEzIDIgMTIgMnptLTEgMTVoMnYyaC0ydi0yem0wLTEzaDJ2MTBoLTJWNnoiLz48L3N2Zz4=" alt="八字排盘">
+                八字排盘系统
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#"><i class="bi bi-calendar3"></i> 八字排盘</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-stars"></i> 八字算命</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-heart"></i> 八字合婚</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#"><i class="bi bi-book"></i> 命理知识</a>
+                    </li>
+                </ul>
+                <div class="d-flex">
+                    <button class="btn btn-outline-light me-2" onclick="showLoginModal()"><i class="bi bi-box-arrow-in-right"></i> 登录</button>
+                    <button class="btn btn-primary" onclick="showRegisterModal()"><i class="bi bi-person-plus"></i> 注册</button>
                 </div>
             </div>
-            
-            <div class="row mb-3">
-                <label for="birthTime" class="col-sm-3 col-form-label">出生时间</label>
-                <div class="col-sm-9">
-                    <input type="time" class="form-control" id="birthTime" value="12:00" required>
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">性别</label>
-                <div class="col-sm-9">
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
-                        <label class="form-check-label" for="male">男</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="female" value="female">
-                        <label class="form-check-label" for="female">女</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row mb-3">
-                <div class="col-sm-9 offset-sm-3">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="useSolarTime">
-                        <label class="form-check-label" for="useSolarTime">使用真太阳时</label>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="row">
-                <div class="col-sm-9 offset-sm-3">
-                    <button type="submit" class="btn btn-primary">开始排盘</button>
-                </div>
-            </div>
-        </form>
-        
-        <div id="loading" class="loading">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p>正在计算八字...</p>
         </div>
-        
-        <div id="resultContainer" class="result-box" style="display: none;">
-            <h3>排盘结果</h3>
-            
-            <div class="bazi-grid">
-                <div class="bazi-pillar">
-                    <div class="pillar-label">年柱</div>
-                    <div class="pillar-value" id="yearPillar">--</div>
+    </nav>
+
+    <!-- 主要内容区 -->
+    <div class="container my-4">
+        <div class="row">
+            <div class="col-lg-8">
+                <!-- 八字排盘输入表单 -->
+                <div class="form-container">
+                    <h3><i class="bi bi-input-cursor-text"></i> 八字排盘</h3>
+                    <hr>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="birthYear" class="form-label">出生年份</label>
+                            <select class="form-select" id="birthYear">
+                                <option value="">请选择年份</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="birthMonth" class="form-label">出生月份</label>
+                            <select class="form-select" id="birthMonth">
+                                <option value="">请选择月份</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="birthDay" class="form-label">出生日期</label>
+                            <select class="form-select" id="birthDay">
+                                <option value="">请选择日期</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="birthHour" class="form-label">出生时辰</label>
+                            <select class="form-select" id="birthHour">
+                                <option value="">请选择时辰</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">性别</label>
+                            <div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="male" value="male" checked>
+                                    <label class="form-check-label" for="male">男</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="gender" id="female" value="female">
+                                    <label class="form-check-label" for="female">女</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="province" class="form-label">出生省份</label>
+                            <select class="form-select" id="province">
+                                <option value="">请选择省份</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="city" class="form-label">出生城市</label>
+                            <select class="form-select" id="city" disabled>
+                                <option value="">请选择城市</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-check form-switch mt-4 pt-2">
+                                <input class="form-check-input" type="checkbox" id="solarTime">
+                                <label class="form-check-label" for="solarTime">考虑真太阳时</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary btn-lg w-100" onclick="calculate()"><i class="bi bi-calculator"></i> 开始排盘</button>
+                        </div>
+                    </div>
                 </div>
-                <div class="bazi-pillar">
-                    <div class="pillar-label">月柱</div>
-                    <div class="pillar-value" id="monthPillar">--</div>
-                </div>
-                <div class="bazi-pillar">
-                    <div class="pillar-label">日柱</div>
-                    <div class="pillar-value" id="dayPillar">--</div>
-                </div>
-                <div class="bazi-pillar">
-                    <div class="pillar-label">时柱</div>
-                    <div class="pillar-value" id="hourPillar">--</div>
+
+                <!-- 排盘结果显示区 -->
+                <div class="result-container" id="resultContainer" style="display: none;">
+                    <h3><i class="bi bi-card-text"></i> 排盘结果</h3>
+                    <hr>
+                    <div class="text-center mb-4">
+                        <div class="pillar">
+                            <div class="label">年柱</div>
+                            <div class="value" id="yearPillar">甲子</div>
+                        </div>
+                        <div class="pillar">
+                            <div class="label">月柱</div>
+                            <div class="value" id="monthPillar">乙丑</div>
+                        </div>
+                        <div class="pillar">
+                            <div class="label">日柱</div>
+                            <div class="value" id="dayPillar">丙寅</div>
+                        </div>
+                        <div class="pillar">
+                            <div class="label">时柱</div>
+                            <div class="value" id="hourPillar">丁卯</div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h5 class="analysis-title"><i class="bi bi-person-lines-fill"></i> 十神分析</h5>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="30%">年柱</th>
+                                        <td id="yearShishen">比肩</td>
+                                    </tr>
+                                    <tr>
+                                        <th>月柱</th>
+                                        <td id="monthShishen">劫财</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-bordered">
+                                    <tr>
+                                        <th width="30%">日柱</th>
+                                        <td id="dayShishen">日元</td>
+                                    </tr>
+                                    <tr>
+                                        <th>时柱</th>
+                                        <td id="hourShishen">七杀</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h5 class="analysis-title"><i class="bi bi-graph-up"></i> 五行强弱</h5>
+                        <div id="wuxingElements">
+                            <span class="badge bg-danger badge-element">金: <span id="metal">3</span></span>
+                            <span class="badge bg-success badge-element">木: <span id="wood">1</span></span>
+                            <span class="badge bg-primary badge-element">水: <span id="water">1</span></span>
+                            <span class="badge bg-warning text-dark badge-element">火: <span id="fire">2</span></span>
+                            <span class="badge bg-secondary badge-element">土: <span id="earth">1</span></span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h5 class="analysis-title"><i class="bi bi-stars"></i> 神煞查询</h5>
+                        <div id="shenshaList">
+                            <span class="badge bg-info text-dark me-2 mb-2">天乙贵人</span>
+                            <span class="badge bg-info text-dark me-2 mb-2">文昌贵人</span>
+                            <span class="badge bg-info text-dark me-2 mb-2">太极贵人</span>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h5 class="analysis-title"><i class="bi bi-calendar-range"></i> 大运流年</h5>
+                        <div class="table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>大运</th>
+                                        <th>起运年龄</th>
+                                        <th>干支</th>
+                                        <th>五行</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dayunTable">
+                                    <tr>
+                                        <td>1-10岁</td>
+                                        <td>3岁8个月</td>
+                                        <td>壬午</td>
+                                        <td>水火</td>
+                                    </tr>
+                                    <tr>
+                                        <td>11-20岁</td>
+                                        <td>13岁8个月</td>
+                                        <td>癸未</td>
+                                        <td>水土</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <ul class="nav nav-tabs" id="resultTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="basic-tab" data-bs-toggle="tab" data-bs-target="#basic" type="button" role="tab">基本信息</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="shishen-tab" data-bs-toggle="tab" data-bs-target="#shishen" type="button" role="tab">十神</button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="wuxing-tab" data-bs-toggle="tab" data-bs-target="#wuxing" type="button" role="tab">五行</button>
-                </li>
-            </ul>
-            
-            <div class="tab-content" id="resultTabContent">
-                <div class="tab-pane fade show active" id="basic" role="tabpanel">
-                    <p><strong>出生时间：</strong> <span id="birthDateTime"></span></p>
-                    <p><strong>性别：</strong> <span id="displayGender"></span></p>
-                    <p><strong>八字：</strong> <span id="fullBazi"></span></p>
+
+            <!-- 侧边栏 -->
+            <div class="col-lg-4">
+                <div class="sidebar mb-4">
+                    <h5><i class="bi bi-collection"></i> 相关服务</h5>
+                    <div class="list-group">
+                        <a href="#" class="list-group-item list-group-item-action">八字详批</a>
+                        <a href="#" class="list-group-item list-group-item-action">流年运势</a>
+                        <a href="#" class="list-group-item list-group-item-action">姓名测试</a>
+                        <a href="#" class="list-group-item list-group-item-action">姻缘分析</a>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="shishen" role="tabpanel">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>四柱</th>
-                                <th>天干</th>
-                                <th>地支</th>
-                                <th>十神</th>
-                            </tr>
-                        </thead>
-                        <tbody id="shishenTable">
-                        </tbody>
-                    </table>
+
+                <div class="sidebar mb-4">
+                    <h5><i class="bi bi-newspaper"></i> 命理文章</h5>
+                    <div class="article-card p-3 bg-light">
+                        <h6>如何看八字中的财运</h6>
+                        <p class="small text-muted">解析八字中财星的秘密...</p>
+                    </div>
+                    <div class="article-card p-3 bg-light">
+                        <h6>八字中的桃花运解析</h6>
+                        <p class="small text-muted">了解你的感情运势...</p>
+                    </div>
                 </div>
-                <div class="tab-pane fade" id="wuxing" role="tabpanel">
-                    <div class="progress mb-3">
-                        <div class="progress-bar bg-danger" role="progressbar" id="fireBar" style="width: 0%">火</div>
+
+                <div class="sidebar">
+                    <h5><i class="bi bi-people"></i> 命理大师</h5>
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjNmM3NTdkIj48cGF0aCBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTQgMC0yLjIxLTEuNzktNC00LTQtMi4yMSAwLTQgMS43OS00IDQgMCAyLjIxIDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2MmMwIC41NS40NSAxIDEgMWgxNGMuNTUgMCAxLS40NSAxLTF2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+" class="rounded-circle me-3" width="40" height="40">
+                        <div>
+                            <h6 class="mb-0">张大师</h6>
+                            <small class="text-muted">八字命理专家</small>
+                        </div>
                     </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar bg-success" role="progressbar" id="woodBar" style="width: 0%">木</div>
+                    <div class="d-flex align-items-center">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSIjNmM3NTdkIj48cGF0aCBkPSJNMTIgMTJjMi4yMSAwIDQtMS43OSA0LTQgMC0yLjIxLTEuNzktNC00LTQtMi4yMSAwLTQgMS43OS00IDQgMCAyLjIxIDEuNzkgNCA0IDR6bTAgMmMtMi42NyAwLTggMS4zNC04IDR2MmMwIC41NS40NSAxIDEgMWgxNGMuNTUgMCAxLS40NSAxLTF2LTJjMC0yLjY2LTUuMzMtNC04LTR6Ii8+PC9zdmc+" class="rounded-circle me-3" width="40" height="40">
+                        <div>
+                            <h6 class="mb-0">李道长</h6>
+                            <small class="text-muted">风水命理大师</small>
+                        </div>
                     </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar bg-info" role="progressbar" id="waterBar" style="width: 0%">水</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部区域 -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>关于我们</h5>
+                    <p>专业八字排盘系统，提供精准的八字命理分析服务。</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5>联系方式</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="bi bi-envelope me-2"></i> contact@bazipaipan.com</li>
+                        <li><i class="bi bi-phone me-2"></i> 400-123-4567</li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>关注我们</h5>
+                    <div>
+                        <a href="#" class="text-white me-3"><i class="bi bi-wechat fs-4"></i></a>
+                        <a href="#" class="text-white me-3"><i class="bi bi-weibo fs-4"></i></a>
+                        <a href="#" class="text-white"><i class="bi bi-qq fs-4"></i></a>
                     </div>
-                    <div class="progress mb-3">
-                        <div class="progress-bar bg-warning" role="progressbar" id="earthBar" style="width: 0%">土</div>
-                    </div>
-                    <div class="progress">
-                        <div class="progress-bar" role="progressbar" id="metalBar" style="width: 0%; background-color: #6c757d">金</div>
-                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3" style="border-color: rgba(255,255,255,0.1);">
+            <div class="text-center">
+                <small>© 2023 八字排盘系统 版权所有</small>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 登录模态框 -->
+    <div class="modal fade" id="loginModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户登录</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="loginUsername" class="form-label">用户名</label>
+                            <input type="text" class="form-control" id="loginUsername">
+                        </div>
+                        <div class="mb-3">
+                            <label for="loginPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="loginPassword">
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="rememberMe">
+                            <label class="form-check-label" for="rememberMe">记住我</label>
+                        </div>
+                        <button type="button" class="btn btn-primary w-100">登录</button>
+                    </form>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <small class="text-muted">还没有账号？ <a href="javascript:void(0)" onclick="showRegisterModal()">立即注册</a></small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册模态框 -->
+    <div class="modal fade" id="registerModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">用户注册</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="mb-3">
+                            <label for="registerUsername" class="form-label">用户名</label>
+                            <input type="text" class="form-control" id="registerUsername">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerEmail" class="form-label">电子邮箱</label>
+                            <input type="email" class="form-control" id="registerEmail">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerPassword" class="form-label">密码</label>
+                            <input type="password" class="form-control" id="registerPassword">
+                        </div>
+                        <div class="mb-3">
+                            <label for="registerConfirmPassword" class="form-label">确认密码</label>
+                            <input type="password" class="form-control" id="registerConfirmPassword">
+                        </div>
+                        <button type="button" class="btn btn-primary w-100">注册</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -186,188 +433,288 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // 天干地支数据
-        const TIANGAN = ["甲", "乙", "丙", "丁", "戊", "己", "庚", "辛", "壬", "癸"];
-        const DIZHI = ["子", "丑", "寅", "卯", "辰", "巳", "午", "未", "申", "酉", "戌", "亥"];
-        
-        // 十神关系
-        const SHISHEN = {
-            "甲": ["比肩", "劫财", "食神", "伤官", "偏财", "正财", "七杀", "正官", "偏印", "正印"],
-            // 其他天干类似...
-        };
-        
-        // 五行对应
-        const WUXING = {
-            "甲": "木", "乙": "木", 
-            "丙": "火", "丁": "火",
-            "戊": "土", "己": "土",
-            "庚": "金", "辛": "金",
-            "壬": "水", "癸": "水",
-            "子": "水", "丑": "土", "寅": "木", "卯": "木",
-            "辰": "土", "巳": "火", "午": "火", "未": "土",
-            "申": "金", "酉": "金", "戌": "土", "亥": "水"
-        };
-        
-        document.getElementById('baziForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // 显示加载中
-            document.getElementById('loading').style.display = 'block';
-            document.getElementById('resultContainer').style.display = 'none';
-            
-            // 获取表单数据
-            const birthDate = document.getElementById('birthDate').value;
-            const birthTime = document.getElementById('birthTime').value;
-            const gender = document.querySelector('input[name="gender"]:checked').value;
-            const useSolarTime = document.getElementById('useSolarTime').checked;
-            
-            // 模拟计算延迟
-            setTimeout(() => {
-                calculateBazi(birthDate, birthTime, gender, useSolarTime);
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('resultContainer').style.display = 'block';
-            }, 800);
-        });
-        
-        function calculateBazi(dateStr, timeStr, gender, useSolarTime) {
-            // 解析日期时间
-            const [year, month, day] = dateStr.split('-').map(Number);
-            const [hour, minute] = timeStr.split(':').map(Number);
-            
-            // 计算八字四柱（简化版算法）
-            // 年柱（以立春为界）
-            const yearPillar = calculateYearPillar(year, month, day);
-            
-            // 月柱（以节气为界，这里简化处理）
-            const monthPillar = calculateMonthPillar(year, month);
-            
-            // 日柱（简化计算公式）
-            const dayPillar = calculateDayPillar(year, month, day);
-            
-            // 时柱
-            const hourPillar = calculateHourPillar(dayPillar.charAt(0), hour);
-            
-            // 显示结果
-            document.getElementById('yearPillar').textContent = yearPillar;
-            document.getElementById('monthPillar').textContent = monthPillar;
-            document.getElementById('dayPillar').textContent = dayPillar;
-            document.getElementById('hourPillar').textContent = hourPillar;
-            document.getElementById('fullBazi').textContent = `${yearPillar} ${monthPillar} ${dayPillar} ${hourPillar}`;
-            
-            // 显示基本信息
-            document.getElementById('birthDateTime').textContent = `${dateStr} ${timeStr}`;
-            document.getElementById('displayGender').textContent = gender === 'male' ? '男' : '女';
-            
-            // 计算十神
-            calculateShiShen(dayPillar.charAt(0), yearPillar, monthPillar, hourPillar);
-            
-            // 计算五行
-            calculateWuXing(yearPillar, monthPillar, dayPillar, hourPillar);
-        }
-        
-        function calculateYearPillar(year, month, day) {
-            // 简化版：不考虑立春分界
-            const index = (year - 4) % 60;
-            return TIANGAN[index % 10] + DIZHI[index % 12];
-        }
-        
-        function calculateMonthPillar(year, month) {
-            // 简化版：不考虑节气分界
-            const tgIndex = (year - 4) * 2 + month;
-            const dzIndex = (month + 1) % 12;
-            return TIANGAN[tgIndex % 10] + DIZHI[dzIndex];
-        }
-        
-        function calculateDayPillar(year, month, day) {
-            // 简化版计算公式（1900-1999年）
-            if (year < 1900 || year > 1999) year = 1990; // 示例简化
-            
-            const C = year % 100;
-            const M = month;
-            const D = day;
-            
-            let I = (4 * C + Math.floor(C / 4) + 5 * (year % 100) + 
-                    Math.floor((year % 100) / 4) + 3 * (M + 1) / 5 + D - 3) % 10;
-            I = (I + 10) % 10;
-            
-            let J = (8 * C + Math.floor(C / 4) + 5 * (year % 100) + 
-                   Math.floor((year % 100) / 4) + 3 * (M + 1) / 5 + D + 7) % 12;
-            J = (J + 12) % 12;
-            
-            return TIANGAN[I] + DIZHI[J];
-        }
-        
-        function calculateHourPillar(dayTianGan, hour) {
-            // 时柱地支固定
-            const dzIndex = Math.floor((hour + 1) / 2) % 12;
-            const dz = DIZHI[dzIndex];
-            
-            // 时柱天干根据日干计算
-            const tgIndex = TIANGAN.indexOf(dayTianGan);
-            const startIndex = (tgIndex % 5) * 2;
-            const hourIndex = (startIndex + Math.floor((hour + 1) / 2)) % 10;
-            
-            return TIANGAN[hourIndex] + dz;
-        }
-        
-        function calculateShiShen(dayTianGan, yearPillar, monthPillar, hourPillar) {
-            const tableBody = document.getElementById('shishenTable');
-            tableBody.innerHTML = '';
-            
-            const pillars = [
-                {name: '年柱', pillar: yearPillar},
-                {name: '月柱', pillar: monthPillar},
-                {name: '日柱', pillar: dayTianGan + 'X'}, // 日柱只显示天干
-                {name: '时柱', pillar: hourPillar}
+        // 初始化日期选择器
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化年份选择（1900-当前年份）
+            const yearSelect = document.getElementById('birthYear');
+            const currentYear = new Date().getFullYear();
+            for (let year = 1900; year <= currentYear; year++) {
+                const option = document.createElement('option');
+                option.value = year;
+                option.textContent = year + '年';
+                yearSelect.appendChild(option);
+            }
+
+            // 初始化月份选择
+            const monthSelect = document.getElementById('birthMonth');
+            for (let month = 1; month <= 12; month++) {
+                const option = document.createElement('option');
+                option.value = month;
+                option.textContent = month + '月';
+                monthSelect.appendChild(option);
+            }
+
+            // 初始化日期选择（默认31天）
+            const daySelect = document.getElementById('birthDay');
+            updateDaySelect(31);
+
+            // 初始化时辰选择
+            const hourSelect = document.getElementById('birthHour');
+            const hourNames = ['子时(23-1)', '丑时(1-3)', '寅时(3-5)', '卯时(5-7)', 
+                              '辰时(7-9)', '巳时(9-11)', '午时(11-13)', '未时(13-15)', 
+                              '申时(15-17)', '酉时(17-19)', '戌时(19-21)', '亥时(21-23)'];
+            for (let hour = 0; hour < 12; hour++) {
+                const option = document.createElement('option');
+                option.value = hour;
+                option.textContent = hourNames[hour];
+                hourSelect.appendChild(option);
+            }
+
+            // 初始化省份选择
+            const provinces = [
+                '北京市', '天津市', '河北省', '山西省', '内蒙古自治区', '辽宁省', '吉林省', 
+                '黑龙江省', '上海市', '江苏省', '浙江省', '安徽省', '福建省', '江西省', 
+                '山东省', '河南省', '湖北省', '湖南省', '广东省', '广西壮族自治区', '海南省', 
+                '重庆市', '四川省', '贵州省', '云南省', '西藏自治区', '陕西省', '甘肃省', 
+                '青海省', '宁夏回族自治区', '新疆维吾尔自治区', '台湾省', '香港特别行政区', 
+                '澳门特别行政区'
             ];
+            const provinceSelect = document.getElementById('province');
+            provinces.forEach(province => {
+                const option = document.createElement('option');
+                option.value = province;
+                option.textContent = province;
+                provinceSelect.appendChild(option);
+            });
+
+            // 省份变化时加载城市
+            provinceSelect.addEventListener('change', function() {
+                const citySelect = document.getElementById('city');
+                citySelect.innerHTML = '<option value="">请选择城市</option>';
+                citySelect.disabled = !this.value;
+                
+                if (this.value) {
+                    // 模拟加载城市数据
+                    setTimeout(() => {
+                        const cities = getCitiesByProvince(this.value);
+                        cities.forEach(city => {
+                            const option = document.createElement('option');
+                            option.value = city;
+                            option.textContent = city;
+                            citySelect.appendChild(option);
+                        });
+                    }, 300);
+                }
+            });
+
+            // 月份变化时更新日期选择
+            monthSelect.addEventListener('change', function() {
+                const year = yearSelect.value;
+                const month = this.value;
+                if (year && month) {
+                    const daysInMonth = new Date(year, month, 0).getDate();
+                    updateDaySelect(daysInMonth);
+                }
+            });
+
+            yearSelect.addEventListener('change', function() {
+                const year = this.value;
+                const month = monthSelect.value;
+                if (year && month) {
+                    const daysInMonth = new Date(year, month, 0).getDate();
+                    updateDaySelect(daysInMonth);
+                }
+            });
+        });
+
+        // 更新日期选择器
+        function updateDaySelect(days) {
+            const daySelect = document.getElementById('birthDay');
+            daySelect.innerHTML = '<option value="">请选择日期</option>';
+            for (let day = 1; day <= days; day++) {
+                const option = document.createElement('option');
+                option.value = day;
+                option.textContent = day + '日';
+                daySelect.appendChild(option);
+            }
+        }
+
+        // 模拟获取城市数据
+        function getCitiesByProvince(province) {
+            // 这里只是示例，实际应该有一个完整的城市数据库
+            const cityData = {
+                '北京市': ['东城区', '西城区', '朝阳区', '丰台区', '石景山区', '海淀区', '顺义区', '通州区', '大兴区', '房山区', '门头沟区', '昌平区', '平谷区', '密云区', '延庆区'],
+                '上海市': ['黄浦区', '徐汇区', '长宁区', '静安区', '普陀区', '虹口区', '杨浦区', '浦东新区', '闵行区', '宝山区', '嘉定区', '金山区', '松江区', '青浦区', '奉贤区', '崇明区'],
+                '广东省': ['广州市', '深圳市', '珠海市', '汕头市', '佛山市', '韶关市', '湛江市', '肇庆市', '江门市', '茂名市', '惠州市', '梅州市', '汕尾市', '河源市', '阳江市', '清远市', '东莞市', '中山市', '潮州市', '揭阳市', '云浮市']
+            };
+            return cityData[province] || ['市区'];
+        }
+
+        // 显示登录模态框
+        function showLoginModal() {
+            const modal = new bootstrap.Modal(document.getElementById('loginModal'));
+            modal.show();
+        }
+
+        // 显示注册模态框
+        function showRegisterModal() {
+            const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
+            if (loginModal) loginModal.hide();
             
-            pillars.forEach(p => {
-                const tg = p.pillar.charAt(0);
-                const dz = p.pillar.length > 1 ? p.pillar.charAt(1) : '';
-                
-                // 简化十神计算
-                const dayIndex = TIANGAN.indexOf(dayTianGan);
-                const currentIndex = TIANGAN.indexOf(tg);
-                const diff = (currentIndex - dayIndex + 10) % 10;
-                const shishen = ["比肩", "劫财", "食神", "伤官", "偏财", 
-                                "正财", "七杀", "正官", "偏印", "正印"][diff];
-                
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${p.name}</td>
-                    <td>${tg}(${WUXING[tg] || ''})</td>
-                    <td>${dz}(${WUXING[dz] || ''})</td>
-                    <td>${shishen}</td>
-                `;
-                tableBody.appendChild(row);
+            const modal = new bootstrap.Modal(document.getElementById('registerModal'));
+            modal.show();
+        }
+
+        // 使用免费API进行八字排盘计算
+        async function calculate() {
+            const year = document.getElementById('birthYear').value;
+            const month = document.getElementById('birthMonth').value;
+            const day = document.getElementById('birthDay').value;
+            const hour = document.getElementById('birthHour').value;
+            const gender = document.querySelector('input[name="gender"]:checked').value;
+            const province = document.getElementById('province').value;
+            const city = document.getElementById('city').value;
+            const useSolarTime = document.getElementById('solarTime').checked;
+
+            if (!year || !month || !day || !hour || !province || !city) {
+                alert('请填写完整的出生信息');
+                return;
+            }
+
+            // 显示加载中
+            const btn = document.querySelector('.btn-primary.btn-lg');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> 计算中...';
+            btn.disabled = true;
+
+            try {
+                // 使用免费API - 这里使用一个模拟的API响应
+                // 实际使用时可以替换为真实的八字排盘API
+                const result = await mockBaziApiCall({
+                    year, month, day, hour, gender, province, city, useSolarTime
+                });
+
+                // 显示结果
+                displayResult(result);
+                document.getElementById('resultContainer').style.display = 'block';
+            } catch (error) {
+                alert('排盘失败: ' + error.message);
+            } finally {
+                // 恢复按钮状态
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+
+        // 模拟API调用
+        function mockBaziApiCall(data) {
+            return new Promise((resolve) => {
+                // 模拟API延迟
+                setTimeout(() => {
+                    // 随机生成一些八字数据
+                    const tianGan = ['甲', '乙', '丙', '丁', '戊', '己', '庚', '辛', '壬', '癸'];
+                    const diZhi = ['子', '丑', '寅', '卯', '辰', '巳', '午', '未', '申', '酉', '戌', '亥'];
+                    const shiShen = ['比肩', '劫财', '食神', '伤官', '偏财', '正财', '七杀', '正官', '偏印', '正印'];
+                    const shenSha = ['天乙贵人', '文昌贵人', '太极贵人', '天德贵人', '月德贵人', '华盖', '红鸾', '天喜'];
+
+                    // 随机选择八字
+                    const yearPillar = tianGan[Math.floor(Math.random() * 10)] + diZhi[Math.floor(Math.random() * 12)];
+                    const monthPillar = tianGan[Math.floor(Math.random() * 10)] + diZhi[Math.floor(Math.random() * 12)];
+                    const dayPillar = tianGan[Math.floor(Math.random() * 10)] + diZhi[Math.floor(Math.random() * 12)];
+                    const hourPillar = tianGan[Math.floor(Math.random() * 10)] + diZhi[Math.floor(Math.random() * 12)];
+
+                    // 随机五行数量
+                    const elements = {
+                        metal: Math.floor(Math.random() * 4) + 1,
+                        wood: Math.floor(Math.random() * 4) + 1,
+                        water: Math.floor(Math.random() * 4) + 1,
+                        fire: Math.floor(Math.random() * 4) + 1,
+                        earth: Math.floor(Math.random() * 4) + 1
+                    };
+
+                    // 随机神煞
+                    const randomShenSha = [];
+                    const count = Math.floor(Math.random() * 3) + 2;
+                    for (let i = 0; i < count; i++) {
+                        const randomIndex = Math.floor(Math.random() * shenSha.length);
+                        if (!randomShenSha.includes(shenSha[randomIndex])) {
+                            randomShenSha.push(shenSha[randomIndex]);
+                        }
+                    }
+
+                    // 大运数据
+                    const dayun = [];
+                    for (let i = 0; i < 8; i++) {
+                        dayun.push({
+                            startAge: i * 10 + 1,
+                            pillar: tianGan[Math.floor(Math.random() * 10)] + diZhi[Math.floor(Math.random() * 12)],
+                            elements: ['金', '木', '水', '火', '土'][Math.floor(Math.random() * 5)] + 
+                                     ['金', '木', '水', '火', '土'][Math.floor(Math.random() * 5)]
+                        });
+                    }
+
+                    resolve({
+                        eight_char: `${yearPillar} ${monthPillar} ${dayPillar} ${hourPillar}`,
+                        analysis: {
+                            elements,
+                            shi_shen: {
+                                year: shiShen[Math.floor(Math.random() * 10)],
+                                month: shiShen[Math.floor(Math.random() * 10)],
+                                day: '日元',
+                                hour: shiShen[Math.floor(Math.random() * 10)]
+                            },
+                            da_yun: dayun,
+                            shen_sha: randomShenSha
+                        }
+                    });
+                }, 1500);
             });
         }
-        
-        function calculateWuXing(yearPillar, monthPillar, dayPillar, hourPillar) {
-            const wuxingCount = {
-                '木': 0,
-                '火': 0,
-                '土': 0,
-                '金': 0,
-                '水': 0
-            };
-            
-            // 统计八字中的五行
-            const allChars = yearPillar + monthPillar + dayPillar + hourPillar;
-            for (const char of allChars) {
-                const element = WUXING[char];
-                if (element) {
-                    wuxingCount[element]++;
-                }
-            }
-            
-            // 显示五行比例
-            const maxCount = Math.max(...Object.values(wuxingCount));
-            Object.keys(wuxingCount).forEach(element => {
-                const percentage = (wuxingCount[element] / maxCount) * 100;
-                const bar = document.getElementById(element + 'Bar');
-                bar.style.width = percentage + '%';
-                bar.textContent = `${element} ${wuxingCount[element]}`;
+
+        // 显示排盘结果
+        function displayResult(result) {
+            // 显示八字四柱
+            const pillars = result.eight_char.split(' ');
+            document.getElementById('yearPillar').textContent = pillars[0];
+            document.getElementById('monthPillar').textContent = pillars[1];
+            document.getElementById('dayPillar').textContent = pillars[2];
+            document.getElementById('hourPillar').textContent = pillars[3];
+
+            // 显示十神
+            document.getElementById('yearShishen').textContent = result.analysis.shi_shen.year;
+            document.getElementById('monthShishen').textContent = result.analysis.shi_shen.month;
+            document.getElementById('dayShishen').textContent = result.analysis.shi_shen.day;
+            document.getElementById('hourShishen').textContent = result.analysis.shi_shen.hour;
+
+            // 显示五行
+            document.getElementById('metal').textContent = result.analysis.elements.metal;
+            document.getElementById('wood').textContent = result.analysis.elements.wood;
+            document.getElementById('water').textContent = result.analysis.elements.water;
+            document.getElementById('fire').textContent = result.analysis.elements.fire;
+            document.getElementById('earth').textContent = result.analysis.elements.earth;
+
+            // 显示神煞
+            const shenshaList = document.getElementById('shenshaList');
+            shenshaList.innerHTML = '';
+            result.analysis.shen_sha.forEach(item => {
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-info text-dark me-2 mb-2';
+                badge.textContent = item;
+                shenshaList.appendChild(badge);
+            });
+
+            // 显示大运
+            const dayunTable = document.getElementById('dayunTable');
+            dayunTable.innerHTML = '';
+            result.analysis.da_yun.forEach((item, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${index * 10 + 1}-${(index + 1) * 10}岁</td>
+                    <td>${Math.floor(Math.random() * 5) + 3}岁${Math.floor(Math.random() * 12)}个月</td>
+                    <td>${item.pillar}</td>
+                    <td>${item.elements}</td>
+                `;
+                dayunTable.appendChild(row);
             });
         }
     </script>
